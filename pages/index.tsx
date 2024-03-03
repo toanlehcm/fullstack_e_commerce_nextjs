@@ -1,9 +1,19 @@
+import { useSession, signIn, signOut } from "next-auth/react";
+
 export default function Home() {
-  return (
-    <div className={"bg-blue-900 w-screen h-screen flex items-center"}>
-      <div className="text-center w-full">
-        <button className="bg-white p-2 px-4 rounded-lg">Login with Google</button>
+  const { data: session } = useSession();
+
+  if (!session) {
+    return (
+      <div className={"bg-blue-900 w-screen h-screen flex items-center"}>
+        <div className="text-center w-full">
+          <button className="bg-white p-2 px-4 rounded-lg" onClick={() => signIn("google")}>
+            Login with Googlee
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return session && session.user && <div>Signed in as {session.user.email}</div>;
 }
